@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../model/configs/page_list.dart';
+import '../model/configs/static_var.dart';
+import '../state/home_providers.dart';
+import '../utility/file_processor.dart';
+import '../widget/bottom_navigation_bar.dart';
+
+class MyMainPage extends ConsumerStatefulWidget {
+  const MyMainPage({Key? key}) : super(key: key);
+
+  @override
+  MyMainPageState createState() => MyMainPageState();
+}
+
+class MyMainPageState extends ConsumerState<MyMainPage> {
+
+  @override
+  void dispose() {
+    // アプリで作成された一時ファイルの削除
+    deleteCache();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // スプラッシュを消す
+    FlutterNativeSplash.remove();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    StaticVar.screenWidth = MediaQuery.of(context).size.width;
+    StaticVar.screenHeight = MediaQuery.of(context).size.height;
+    final selectedIndex = ref.watch(selectedIndexProvider);
+
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: pageList[selectedIndex],
+        bottomNavigationBar: const MyBottomNavigationBar()
+    );
+  }
+}
