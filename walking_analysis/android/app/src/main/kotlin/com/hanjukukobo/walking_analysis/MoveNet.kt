@@ -66,17 +66,20 @@ class MoveNet(private val interpreter: Interpreter) {
 
         // TFLite file names.
         private const val THUNDER_FILENAME = "movenet_thunder.tflite"
+        private const val LIGHTNING_FILENAME = "movenet_lightning.tflite"
 
         // allow specifying model type.
-        fun create(context: Context): MoveNet {
+        fun create(context: Context, model: Int): MoveNet {
             val options = Interpreter.Options()
             options.setNumThreads(CPU_NUM_THREADS)
+
+            val useModel = if(model == 0) THUNDER_FILENAME else LIGHTNING_FILENAME
 
             return MoveNet(
                     Interpreter(
                             FileUtil.loadMappedFile(
                                     context,
-                                    THUNDER_FILENAME
+                                    useModel
                             ), options
                     ),
             )

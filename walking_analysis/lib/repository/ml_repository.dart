@@ -40,7 +40,7 @@ class MlRepository {
     ref.read(progressValProvider.notifier).setIsDeterminate(true);
 
     // 機械学習処理を初期化
-    channel.invokeMethod("create");
+    channel.invokeMethod("create", ref.read(useModelProvider));
     List<List<dynamic>> angleLists = [];
 
     final int maxCount = pathNameList.length;
@@ -51,11 +51,8 @@ class MlRepository {
       for (String imagePath in pathNameList) {
         // ネイティブから関節角度を取得
         Uint8List imageBytes = File(imagePath).readAsBytesSync();
-        var decodedImage = await decodeImageFromList(imageBytes);
         final Map params = <String, dynamic> {
           'image': imageBytes,
-          'width': decodedImage.width,
-          'height': decodedImage.height,
         };
         Map map = await channel.invokeMethod('process', params);
         final List angleList = map['angleList'];

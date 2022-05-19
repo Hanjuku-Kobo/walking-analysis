@@ -32,13 +32,12 @@ class MainActivity: FlutterActivity() {
         channel.setMethodCallHandler {methodCall, result ->
             when(methodCall.method) {
                 METHOD_CREATE -> {
-                    moveNet = MoveNet.create(this)
+                    val model = methodCall.arguments
+                    moveNet = MoveNet.create(this, model as Int)
                 }
                 METHOD_PROCESS -> {
                     val byteArray = methodCall.argument<ByteArray>("image")
-                    val width = methodCall.argument<Int>("width")
-                    val height = methodCall.argument<Int>("height")
-                    val map = processImage(byteArray!!, width!!, height!!)
+                    val map = processImage(byteArray!!)
                     result.success(map)
                 }
                 METHOD_CLOSE -> {
@@ -49,7 +48,7 @@ class MainActivity: FlutterActivity() {
         }
     }
 
-    private fun processImage(bytes: ByteArray, width: Int, height: Int): HashMap<String, Any> {
+    private fun processImage(bytes: ByteArray): HashMap<String, Any> {
         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
         val persons = mutableListOf<Person>()

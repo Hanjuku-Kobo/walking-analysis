@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:walking_analysis/model/configs/ml_mode_list.dart';
 
 import '../model/configs/static_var.dart';
 import '../repository/ml_repository.dart';
@@ -11,6 +12,7 @@ class MlViewModel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var selectedVal = mlDescriptionText[ref.watch(useModelProvider)];
     final canProcess = ref.watch(processStateProvider);
     final progressVal = ref.watch(progressValProvider).value;
     final isDeterminate = ref.watch(progressValProvider).isDeterminate;
@@ -21,11 +23,11 @@ class MlViewModel extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Column(
-          children: [
-            SizedBox(
-              width: width / 1.7,
-              child: ClipRRect(
+        SizedBox(
+          width: width / 1.7,
+          child: Column(
+            children: [
+              ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 child: isDeterminate
                     ? LinearProgressIndicator(
@@ -39,10 +41,33 @@ class MlViewModel extends ConsumerWidget {
                   minHeight: 10,
                 ),
               ),
-            ),
-            const SizedBox(height: 8,),
-            Text('$percentProgress%', style: const TextStyle(fontSize: 14),)
-          ],
+              const SizedBox(height: 8,),
+              Row(
+                children: [
+                  PopupMenuButton<String> (
+                    child: const Icon(Icons.more_horiz),
+                    onSelected: (String s) {
+                      if (s == mlDescriptionText[0]) {
+                        ref.read(useModelProvider.notifier).state = 0;
+                      } else if (s == mlDescriptionText[1]) {
+                        ref.read(useModelProvider.notifier).state = 1;
+                      }
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return mlDescriptionText.map((String s) {
+                        return PopupMenuItem(
+                          value: s,
+                          child: Text(s),
+                        );
+                      }).toList();
+                    },
+                  ),
+                  const Spacer(),
+                  Text('$selectedVal : $percentProgress%', style: const TextStyle(fontSize: 14),),
+                ],
+              )
+            ],
+          ),
         ),
         OriginalIconButton(
           icon: Icons.auto_awesome_outlined,
