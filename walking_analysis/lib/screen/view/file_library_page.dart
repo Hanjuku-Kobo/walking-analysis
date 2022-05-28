@@ -116,114 +116,116 @@ class FileLibraryPageState extends ConsumerState<FileLibraryPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 8,),
-          CardTemplate(
-            title: '保存されたファイル',
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                LimitedBox(
-                  maxHeight: 200,
-                  child:  fileList.isNotEmpty
-                    ? ListView.builder(
-                      itemCount: fileList.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: 24,
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                          child: OutlinedButton(
-                            onPressed: () => showDialog(
-                              context: context,
-                              builder: (_)  {
-                                try {fileName = fileList[index];}
-                                catch(e){
-                                  print(e.toString());
-                                }
-                                return FileHandlingDialog(fileName, dir);
+      body: SingleChildScrollView(
+        child: Column(
+            children: [
+              const SizedBox(height: 8,),
+              CardTemplate(
+                  title: '保存されたファイル',
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      LimitedBox(
+                          maxHeight: 200,
+                          child:  fileList.isNotEmpty
+                              ? ListView.builder(
+                              itemCount: fileList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: 24,
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                                  child: OutlinedButton(
+                                    onPressed: () => showDialog(
+                                        context: context,
+                                        builder: (_)  {
+                                          try {fileName = fileList[index];}
+                                          catch(e){
+                                            print(e.toString());
+                                          }
+                                          return FileHandlingDialog(fileName, dir);
+                                        }
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      primary: Colors.black,
+                                    ),
+                                    child: Text(fileList[index], style: const TextStyle(color: Colors.black)),
+                                  ),
+                                );
                               }
-                            ),
-                            style: TextButton.styleFrom(
-                              primary: Colors.black,
-                            ),
-                            child: Text(fileList[index], style: const TextStyle(color: Colors.black)),
-                          ),
-                        );
-                      }
-                    )
-                    : Container(
-                      alignment: Alignment.center,
-                      child: Text('アプリで作成されたファイルがありません'),
-                    )
-                ),
-              ],
-            )
-          ),
-          CardTemplate(
-            title: 'グラフまたは動画を表示',
-            child: Container(
-              padding: EdgeInsets.only(top: 8),
-              width: double.infinity,
-              child: Column(
-                children: [
-                  if (!_fileExist() || fileExtension == PreviewModel.NONE)
-                    Container(
-                      height: 100,
-                      alignment: Alignment.center,
-                      child: Text('選択されていません'),
-                    )
-                  else if(fileExtension == PreviewModel.CSV_EXTENSION)
-                    Column(
+                          )
+                              : Container(
+                            alignment: Alignment.center,
+                            child: Text('アプリで作成されたファイルがありません'),
+                          )
+                      ),
+                    ],
+                  )
+              ),
+              CardTemplate(
+                  title: 'グラフまたは動画を表示',
+                  child: Container(
+                    padding: EdgeInsets.only(top: 8),
+                    width: double.infinity,
+                    child: Column(
                       children: [
-                        Container(
-                          height: 200,
-                          width: double.infinity,
-                          padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
-                          child: chart.LineChart(
-                            _createDataList()
-                          ),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.only(bottom: 4, right: 16),
-                          child:Text(fileName, textAlign: TextAlign.right,)
-                        ),
-                      ],
-                    )
-                  else if(fileExtension == PreviewModel.MP4_EXTENSION)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: imageHeight,
-                          width: imageHeight / 1.7,
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          alignment: Alignment.center,
-                          child: VideoPlayer(_createVideoController())
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0x88eece01),
-                                borderRadius: BorderRadius.circular(24)
+                        if (!_fileExist() || fileExtension == PreviewModel.NONE)
+                          Container(
+                            height: 100,
+                            alignment: Alignment.center,
+                            child: Text('選択されていません'),
+                          )
+                        else if(fileExtension == PreviewModel.CSV_EXTENSION)
+                          Column(
+                            children: [
+                              Container(
+                                height: 200,
+                                width: double.infinity,
+                                padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                                child: chart.LineChart(
+                                    _createDataList()
+                                ),
                               ),
-                              child: IconButton(
-                                onPressed: () {controller.play();},
-                                icon: const Icon(Icons.restart_alt),
-                              )
-                            ),
-                          ],
-                        )
+                              Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.only(bottom: 4, right: 16),
+                                  child:Text(fileName, textAlign: TextAlign.right,)
+                              ),
+                            ],
+                          )
+                        else if(fileExtension == PreviewModel.MP4_EXTENSION)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                    height: imageHeight,
+                                    width: imageHeight / 1.7,
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    alignment: Alignment.center,
+                                    child: VideoPlayer(_createVideoController())
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: const Color(0x88eece01),
+                                            borderRadius: BorderRadius.circular(24)
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {controller.play();},
+                                          icon: const Icon(Icons.restart_alt),
+                                        )
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
                       ],
-                    )
-                  ],
-                ),
-              )
-          ),
-          const SizedBox(height: 8,),
-        ]
+                    ),
+                  )
+              ),
+              const SizedBox(height: 8,),
+            ]
+        ),
       )
     );
   }

@@ -40,7 +40,29 @@ class MyMainPageState extends ConsumerState<MyMainPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: pageList[selectedIndex],
-        bottomNavigationBar: const MyBottomNavigationBar()
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            ref.read(selectedIndexProvider.notifier).state = index;
+          },
+          selectedIndex: selectedIndex,
+          destinations: const <Widget>[
+            NavigationDestination(
+              selectedIcon: Icon(Icons.video_library),
+              icon: Icon(Icons.video_library_outlined,),
+              label: 'アプリログ',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined),
+              label: 'ホーム',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.insert_drive_file),
+              icon: Icon(Icons.insert_drive_file_outlined),
+              label: 'ファイル操作',
+            ),
+          ],
+        )
     );
   }
 }

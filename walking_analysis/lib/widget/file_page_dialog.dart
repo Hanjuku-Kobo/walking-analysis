@@ -58,6 +58,7 @@ class FileHandlingDialog extends StatelessWidget {
 
   void _reloadFileList() {
     List list = getOriginalFileNameList(dir);
+    list.sort((a, b) => a.compareTo(b));
     ref.read(fileListProvider.notifier).setList(list);
   }
 
@@ -111,7 +112,12 @@ class FileHandlingDialog extends StatelessWidget {
                   return AlertDialog(
                     title: Text('ファイル名を入力'),
                     content: TextField(
-                      decoration: InputDecoration(hintText: 'ファイル名を入力してください'),
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: 'ファイル名を入力してください',
+                        border: OutlineInputBorder(),
+                        labelText: 'Name'
+                      ),
                       autofocus: true,
                       onChanged: (text) {
                         inputText = text;

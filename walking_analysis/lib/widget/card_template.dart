@@ -13,10 +13,12 @@ class CardTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8,
-      shadowColor: Colors.grey,
+      elevation: 0,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8)
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Container(

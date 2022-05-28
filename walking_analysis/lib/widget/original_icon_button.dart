@@ -21,13 +21,6 @@ class OriginalIconButton extends StatelessWidget {
         child: Icon(icon, color: Colors.orange),
         style: ElevatedButton.styleFrom(
           elevation: 4,
-          shape: const CircleBorder(
-            side: BorderSide(
-              color: Colors.white,
-              width: 1,
-              style: BorderStyle.solid,
-            ),
-          ),
         ),
       ),
       text,

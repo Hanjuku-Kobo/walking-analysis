@@ -126,7 +126,7 @@ class PrepareViewModel extends ConsumerWidget {
               child: const Text('動画が選択されていません'),
             )
         ),
-        Column(
+        Row(
           children: <Widget>[
             OriginalIconButton(
               icon: Icons.camera_alt_outlined,
@@ -144,9 +144,9 @@ class PrepareViewModel extends ConsumerWidget {
                 );
               } : null,
               text: const Text('撮影'),
-              isRow: true,
+              isRow: false,
             ),
-            const SizedBox(height: 8,),
+            const SizedBox(width: 8,),
             OriginalIconButton(
               icon: Icons.folder_outlined,
               onPressed: _prepareState ? () {
@@ -162,7 +162,7 @@ class PrepareViewModel extends ConsumerWidget {
                 );
               } : null,
               text: const Text('選択'),
-              isRow: true,
+              isRow: false,
             ),
           ],
         ),

@@ -9,21 +9,12 @@ import 'state/introduction_provider.dart';
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  final MaterialColor materialWhite = const MaterialColor(
-    0xFFFFFFFF,
-    <int, Color>{
-      50: Color(0xFFFFFFFF),
-      100: Color(0xFFFFFFFF),
-      200: Color(0xFFFFFFFF),
-      300: Color(0xFFFFFFFF),
-      400: Color(0xFFFFFFFF),
-      500: Color(0xFFFFFFFF),
-      600: Color(0xFFFFFFFF),
-      700: Color(0xFFFFFFFF),
-      800: Color(0xFFFFFFFF),
-      900: Color(0xFFFFFFFF),
-    },
-  );
+  ThemeData _themeData() {
+    return ThemeData(
+      useMaterial3: true,
+      colorSchemeSeed: Colors.orangeAccent[200]
+    );
+  }
 
   // This widget is the root of your application.
   @override
@@ -35,9 +26,7 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: materialWhite,
-      ),
+      theme: _themeData(),
       home: intro ? IntroductionPage() : const MyMainPage(),
     );
   }

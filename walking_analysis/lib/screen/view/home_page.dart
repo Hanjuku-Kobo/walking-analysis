@@ -25,7 +25,6 @@ class HomePage extends ConsumerWidget {
                 ? () => RestartRepository().restart(ref)
                 : null,
             icon: const Icon(Icons.restart_alt_outlined, color: Colors.orange),
-
           ),
         ],
       ),
